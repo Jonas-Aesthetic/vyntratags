@@ -321,12 +321,12 @@ window.addEventListener('drop',e=>e.preventDefault());
 const auth=()=>{$('#mg').style.display=ME?'':'none';$('#lo').style.display=ME?'':'none';$('#lk').style.display=ME?'none':''};
 $('#lk').onclick=e=>{e.preventDefault();$('#lg').classList.add('on');$('#lu').focus()};
 $('#lgc').onclick=()=>$('#lg').classList.remove('on');
-$('#lgf').onsubmit=async e=>{e.preventDefault();const b=$('#lgb');b.disabled=true;try{const r=await fetch('/api/app?a=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:$('#lu').value,pass:$('#lp').value})});const j=await r.json();if(!r.ok)throw new Error(j.error);ME=j.user;$('#lg').classList.remove('on');$('#lp').value='';auth();toast('Bem-vindo, '+ME+'.')}catch(x){toast(x.message||'Erro ao entrar')}b.disabled=false};
+$('#lgf').onsubmit=async e=>{e.preventDefault();const b=$('#lgb');b.disabled=true;try{const r=await fetch('/api/app?a=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:$('#lu').value,pass:$('#lp').value})});const j=await r.json().catch(()=>({error:'Servidor de login não encontrado: a pasta api não foi publicada na Vercel.'}));if(!r.ok)throw new Error(j.error);ME=j.user;$('#lg').classList.remove('on');$('#lp').value='';auth();if(!edit)$('#mg').click();toast('Bem-vindo, '+ME+'. Modo de edição ativado.')}catch(x){toast(x.message||'Erro ao entrar')}b.disabled=false};
 $('#lo').onclick=async()=>{try{await fetch('/api/app?a=logout',{method:'POST'})}catch(x){}ME=null;if(edit)$('#mg').click();auth();toast('Sessão encerrada.')};
 (async()=>{
   try{const[r,s]=await Promise.all([fetch('/api/app?a=products'),fetch('/api/app?a=session')]);const d=await r.json(),j=await s.json();if(d.items&&d.items.length)P=d.items;if(d.wa)WA=d.wa;ME=j.user||null}catch(e){}
   if(!P.length)P=DEF.map(p=>({...p}));P.forEach((p,i)=>{if(!p.id)p.id=Date.now()+i});
-  $('#wa').value=WA;auth();grid();rv();
+  $('#wa').value=WA;auth();grid();rv();if(/^#(admin|entrar)$/.test(location.hash)&&!ME)$('#lk').click();
 })();
 </script>
 </body>
