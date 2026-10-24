@@ -3,179 +3,269 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vyntra</title>
+<title>Vyntra – Plaquinhas NFC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#14171f;--mute:#6b7280;--line:#eceef2;--soft:#f6f7f9;--blue:#1d5cff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{--ink:#0f1320;--mute:#667085;--line:#e9ecf2;--soft:#f6f8fb;--blue:#1d5cff;--tint:#f3f7ff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:#fff;color:var(--ink);font:400 15px/1.55 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}
-button{font:inherit;cursor:pointer;color:inherit}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-header,main{max-width:1200px;margin:0 auto;padding-left:32px;padding-right:32px}
-header{display:flex;align-items:center;justify-content:space-between;padding-top:28px;padding-bottom:28px;border-bottom:1px solid var(--line);max-width:none;padding-left:max(32px,calc((100vw - 1200px)/2 + 32px));padding-right:max(32px,calc((100vw - 1200px)/2 + 32px))}
-.logo{font-weight:800;font-size:28px;letter-spacing:-.04em;color:var(--blue);line-height:1}
-.btn{border:1px solid var(--line);background:#fff;padding:10px 20px;border-radius:999px;font-weight:600;transition:border-color .15s,background .15s}
-.btn:hover{border-color:#c9cfda}
-.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+body{margin:0;background:#fff;color:var(--ink);font:400 16px/1.6 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:rgba(255,255,255,.88);backdrop-filter:blur(14px);z-index:11}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.w{max-width:1160px;margin:0 auto;padding:0 32px}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav .w{display:flex;align-items:center;gap:28px;height:76px}
+.logo{font-weight:800;font-size:28px;letter-spacing:-.045em;color:var(--blue);text-decoration:none}
+.links{display:flex;gap:28px;margin-left:auto}
+.links a{color:var(--mute);text-decoration:none;font-size:14px;font-weight:600;transition:color .2s}.links a:hover{color:var(--ink)}
+.nr{display:flex;align-items:center;gap:10px}
+.btn{border:1px solid var(--line);background:#fff;padding:13px 26px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;display:inline-block;transition:.2s}
+.btn:hover{border-color:#c6cdda;transform:translateY(-1px)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 12px 26px -12px rgba(29,92,255,.7)}
 .btn.primary:hover{background:#174ed6}
-.btn.danger{color:#b42318}
-.btn.danger.ask{background:#b42318;border-color:#b42318;color:#fff}
-main{padding-top:56px;padding-bottom:120px}
-.top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:48px}
-h1{margin:0;font-size:clamp(30px,4.4vw,44px);font-weight:600;letter-spacing:-.035em;line-height:1.08}
-.sub{margin:10px 0 0;color:var(--mute);max-width:46ch}
-.search{border:0;border-bottom:1px solid var(--line);background:transparent;padding:8px 2px;width:240px;max-width:100%;font:inherit;outline:0;transition:border-color .15s}
-.search:focus{border-color:var(--blue)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:44px 28px}
-.card{display:block;text-align:left;background:none;border:0;padding:0}
-.card .img{aspect-ratio:1;background:var(--soft);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;place-items:center;color:#b8bec9;transition:border-color .15s}
-.card:hover .img{border-color:#cfd5df}
-.img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s}
-.card:hover .img img{transform:scale(1.03)}
-.card h3{margin:16px 0 4px;font-size:16px;font-weight:600;letter-spacing:-.01em}
-.card p{margin:0;color:var(--mute);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.meta{display:block;margin-top:8px;font-size:13px;color:#9aa1ae}
-.card.drag{opacity:.35}
-.card.over .img{border-color:var(--blue);box-shadow:0 0 0 3px rgba(29,92,255,.12)}
-.empty{grid-column:1/-1;border:1px dashed #d6dae2;border-radius:18px;padding:80px 24px;text-align:center}
-.empty h2{margin:0 0 6px;font-size:20px;font-weight:600}
-.empty p{margin:0 0 24px;color:var(--mute)}
-#modal{position:fixed;inset:0;background:rgba(20,23,31,.32);display:none;align-items:center;justify-content:center;padding:20px;z-index:20;backdrop-filter:blur(3px)}
+.btn.sm{padding:9px 18px;font-size:14px}
+.btn.ask{background:#b42318;border-color:#b42318;color:#fff}
+.ghost{background:none;border:0;color:var(--mute);font-size:13px;font-weight:600;padding:8px}.ghost:hover{color:var(--ink)}
+.ed{display:none}body.edit .ed{display:inline-block}
+.hero{padding:84px 0 72px}
+.hero .w{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+h1{font-size:clamp(38px,5.6vw,68px);line-height:1.04;letter-spacing:-.045em;font-weight:700;margin:0 0 22px}
+.lead{font-size:19px;color:var(--mute);max-width:48ch;margin:0 0 34px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;list-style:none;padding:0;margin:56px 0 0}
+.facts li{font-size:13px;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}.facts b{display:block;color:var(--ink);font-size:15px}
+.stack{position:relative;aspect-ratio:1}
+.stack::before{content:"";position:absolute;inset:8%;background:radial-gradient(closest-side,rgba(29,92,255,.16),transparent);filter:blur(24px)}
+.f{position:absolute;width:62%;aspect-ratio:1;object-fit:cover;border-radius:24px;border:1px solid var(--line);background:var(--soft);box-shadow:0 44px 70px -34px rgba(29,92,255,.4);animation:fl 7s ease-in-out infinite}
+.f0{left:0;top:6%}.f1{right:0;top:0;animation-delay:-2.3s}.f2{left:19%;bottom:0;animation-delay:-4.6s}
+.emp{display:grid;place-items:center;color:#b8bec9}
+@keyframes fl{50%{transform:translateY(-12px)}}
+.sec{padding:96px 0}.sec.t{background:var(--tint)}
+h2{font-size:clamp(28px,3.6vw,42px);letter-spacing:-.035em;line-height:1.1;font-weight:700;margin:0 0 14px}
+.sub{color:var(--mute);max-width:56ch;margin:0 0 52px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.st{border-top:1px solid var(--line);padding-top:22px}.t .st{border-color:#d9e3fb}
+.st i{font-style:normal;color:var(--blue);font-weight:700;font-size:14px}
+.st h3{margin:6px 0 8px;font-size:20px;letter-spacing:-.02em}.st p{margin:0;color:var(--mute)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 18px;font-size:14px;font-weight:600;color:var(--mute);transition:.2s}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:48px 32px}
+.card{cursor:pointer;outline-offset:8px}
+.card .img{aspect-ratio:1;border-radius:22px;overflow:hidden;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:#b8bec9;transition:transform .2s ease-out,box-shadow .4s,border-color .2s}
+.card:hover .img{box-shadow:0 40px 60px -36px rgba(29,92,255,.45);border-color:#d3dcf5}
+.img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}.card:hover .img img{transform:scale(1.045)}
+.cb{padding:22px 4px 0}
+.cat{font-size:13px;font-weight:700;color:var(--blue)}
+.card h3{margin:6px 0;font-size:21px;letter-spacing:-.025em;line-height:1.25}.card p{margin:0;color:var(--mute)}
+.more{display:inline-block;margin-top:14px;font-weight:600;font-size:14px;border-bottom:1px solid var(--ink)}
+.card.drag{opacity:.35}.card.over .img{border-color:var(--blue)}
+details{border-bottom:1px solid var(--line);padding:22px 0}
+summary{cursor:pointer;font-weight:600;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}summary::after{content:"+";color:var(--blue);font-size:24px;line-height:1}
+details[open] summary::after{content:"–"}details p{margin:12px 0 0;color:var(--mute);max-width:64ch}
+.final{background:var(--tint);border-radius:28px;padding:80px 32px;text-align:center;margin-bottom:96px}
+.final p{color:var(--mute);margin:0 auto 32px;max-width:48ch}
+.ft{border-top:1px solid var(--line);padding:32px 0;color:var(--mute);font-size:14px}.ft .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}.rv.in{opacity:1;transform:none}
+#modal{position:fixed;inset:0;background:rgba(15,19,32,.4);display:none;align-items:center;justify-content:center;padding:20px;z-index:30;backdrop-filter:blur(4px)}
 #modal.on{display:flex}
-.panel{background:#fff;border-radius:20px;width:min(1020px,100%);max-height:calc(100% - 8px);overflow:auto;display:grid;grid-template-columns:1.15fr 1fr;gap:40px;padding:36px;box-shadow:0 30px 80px rgba(20,23,31,.18)}
-#stage{aspect-ratio:1;background:var(--soft);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;place-items:center}
+.panel{background:#fff;border-radius:26px;width:min(1100px,100%);max-height:94vh;overflow:auto;display:grid;grid-template-columns:1.1fr 1fr;gap:48px;padding:40px;box-shadow:0 40px 100px rgba(15,19,32,.25)}
+#stage{aspect-ratio:1;background:var(--soft);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:grid;place-items:center}
 #stage img{width:100%;height:100%;object-fit:contain;background:#fff}
-#stage.empty{border:1.5px dashed #cfd5df;cursor:pointer;background:#fff}
-#stage.empty:hover,#gallery.drop #stage{border-color:var(--blue);background:#f7faff}
-.dz{text-align:center;color:var(--mute)}
-.dz b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
+#stage.empty{border:1.5px dashed #cfd5df;background:#fff}body.edit #stage.empty{cursor:pointer}
+#gallery.drop #stage{border-color:var(--blue);background:#f7faff}
+.dz{text-align:center;color:var(--mute)}.dz b{display:block;color:var(--ink)}
 #thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.th{position:relative;width:68px;height:68px;border-radius:10px;border:1px solid var(--line);background:var(--soft);padding:0;overflow:hidden;cursor:grab}
+.th{position:relative;width:70px;height:70px;border-radius:12px;border:1px solid var(--line);background:var(--soft);padding:0;overflow:hidden;cursor:pointer}
+body.edit .th{cursor:grab}
 .th img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.th.sel{outline:2px solid var(--blue);outline-offset:2px}
-.th.dragging{opacity:.35}
-.th.target{border-color:var(--blue)}
-.th.add{display:grid;place-items:center;font-size:24px;color:var(--mute);background:#fff;border-style:dashed;cursor:pointer}
-.th.add:hover{color:var(--blue);border-color:var(--blue)}
-.x{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;border:0;background:rgba(20,23,31,.72);color:#fff;font-size:14px;line-height:1;display:none;place-items:center;padding:0}
-.th:hover .x,.th:focus-within .x{display:grid}
+.th.sel{outline:2px solid var(--blue);outline-offset:2px}.th.dragging{opacity:.35}.th.target{border-color:var(--blue)}
+.th.add{display:grid;place-items:center;font-size:24px;color:var(--mute);background:#fff;border-style:dashed}
+.x{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;border:0;background:rgba(15,19,32,.75);color:#fff;font-size:14px;line-height:1;display:none;place-items:center;padding:0}
+body.edit .th:hover .x{display:grid}
 #hint{min-height:20px;margin:10px 0 0;font-size:13px;color:#9aa1ae}
-.form{display:flex;flex-direction:column}
-label{font-size:13px;font-weight:600;color:var(--mute);margin-bottom:6px}
-.field{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;color:var(--ink);background:#fff;width:100%;outline:0;transition:border-color .15s,box-shadow .15s}
+#side h2{font-size:clamp(26px,3vw,34px);margin:6px 0 8px}
+.tag{font-size:18px;font-weight:600;margin:0 0 16px;letter-spacing:-.015em}
+.story{color:#3b4252;font-size:16.5px;line-height:1.75;margin:0}
+.perks{list-style:none;padding:0;margin:24px 0}
+.perks li{padding-left:30px;position:relative;margin-bottom:10px}
+.perks li::before{content:"";position:absolute;left:2px;top:.5em;width:12px;height:6px;border-left:2px solid var(--blue);border-bottom:2px solid var(--blue);transform:rotate(-45deg)}
+.specs{display:grid;grid-template-columns:auto 1fr;gap:10px 28px;margin:0 0 30px;padding-top:22px;border-top:1px solid var(--line);font-size:14px}
+.specs dt{color:var(--mute)}.specs dd{margin:0;font-weight:600}
+.mact{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
+label{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:0 0 14px}
+.field{display:block;width:100%;margin-top:6px;border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:#fff;outline:0;color:var(--ink);transition:.2s}
 .field:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(29,92,255,.1)}
-#t{font-size:20px;font-weight:600;letter-spacing:-.02em;margin-bottom:22px}
-#d{resize:vertical;min-height:180px;flex:1}
-.actions{display:flex;gap:10px;justify-content:space-between;margin-top:24px}
-#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:30}
+textarea.field{resize:vertical}
+#wa{width:210px;padding:8px 12px;margin:0;font-size:13px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:40}
 #toast.on{opacity:1;transform:translate(-50%,0)}
-@media(max-width:820px){header,main{padding-left:20px;padding-right:20px}header{padding-left:20px;padding-right:20px}.panel{grid-template-columns:1fr;gap:24px;padding:22px}.grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:32px 16px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media(max-width:860px){.w{padding:0 20px}.links{display:none}.nr{margin-left:auto}.hero{padding:48px 0}.hero .w{grid-template-columns:1fr;gap:48px}.facts{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr;gap:28px}.sec{padding:64px 0}.panel{grid-template-columns:1fr;gap:28px;padding:22px}.grid{grid-template-columns:1fr}#wa{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<header>
-  <span class="logo">Vyntra</span>
-  <button class="btn primary" id="new">Novo produto</button>
-</header>
-<main>
-  <div class="top">
-    <div>
-      <h1>Catálogo</h1>
-      <p class="sub" id="count"></p>
-    </div>
-    <input class="search" id="q" type="search" placeholder="Buscar produto" aria-label="Buscar produto">
+<header class="nav"><div class="w">
+  <a class="logo" href="#">Vyntra</a>
+  <nav class="links"><a href="#como">Como funciona</a><a href="#colecao">Coleção</a><a href="#faq">Perguntas</a></nav>
+  <div class="nr">
+    <input class="field ed" id="wa" inputmode="numeric" placeholder="Seu WhatsApp: 5511999999999" aria-label="WhatsApp">
+    <button class="btn sm primary ed" id="new">Novo produto</button>
+    <button class="ghost" id="mg">Gerenciar</button>
+    <button class="btn sm primary" data-wa="">Falar com especialista</button>
   </div>
-  <div class="grid" id="grid"></div>
-</main>
+</div></header>
 
-<div id="modal" role="dialog" aria-modal="true" aria-label="Editar produto">
-  <div class="panel">
-    <div id="gallery">
-      <div id="stage"></div>
-      <div id="thumbs"></div>
-      <p id="hint"></p>
-    </div>
-    <div class="form">
-      <label for="t">Título</label>
-      <input class="field" id="t" placeholder="Nome do produto" maxlength="90">
-      <label for="d">Descrição</label>
-      <textarea class="field" id="d" placeholder="Conte os detalhes do produto"></textarea>
-      <div class="actions">
-        <button class="btn danger" id="del">Excluir</button>
-        <button class="btn primary" id="done">Salvar</button>
-      </div>
-    </div>
+<section class="hero"><div class="w">
+  <div class="rv">
+    <h1>Cada toque no seu balcão pode virar uma venda.</h1>
+    <p class="lead">Plaquinhas NFC premium que fazem o cliente avaliar, seguir e pagar sem digitar nada. Menos fricção para ele, mais resultado para o seu negócio.</p>
+    <div class="cta"><a class="btn primary" href="#colecao">Ver coleção</a><button class="btn" data-wa="">Falar com especialista</button></div>
+    <ul class="facts"><li><b>NFC + QR code</b>duas formas de acesso</li><li><b>Sem aplicativo</b>abre na hora</li><li><b>10 × 10 cm</b>formato compacto</li><li><b>iPhone e Android</b>ampla compatibilidade</li></ul>
   </div>
-</div>
+  <div class="stack" id="stack"></div>
+</div></section>
+
+<section class="sec t" id="como"><div class="w">
+  <h2 class="rv">Do toque ao resultado em segundos</h2>
+  <p class="sub rv">Um gesto simples, uma ação que importa para a sua marca.</p>
+  <div class="cols">
+    <div class="st rv"><i>1</i><h3>Aproxime</h3><p>O cliente encosta o celular na plaquinha ou lê o QR code. Sem baixar nada.</p></div>
+    <div class="st rv"><i>2</i><h3>Abra</h3><p>A página certa abre na hora: avaliação no Google, seu Instagram ou o pagamento via PIX.</p></div>
+    <div class="st rv"><i>3</i><h3>Cresça</h3><p>Cada gesto soma avaliações, seguidores e vendas mais rápidas para a sua marca.</p></div>
+  </div>
+</div></section>
+
+<section class="sec" id="colecao"><div class="w">
+  <h2 class="rv">Coleção Vyntra</h2>
+  <p class="sub rv">Escolha o modelo que trabalha pelo seu negócio. Toque em um produto para ver a história completa.</p>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section class="sec t"><div class="w">
+  <h2 class="rv">Por que Vyntra</h2>
+  <p class="sub rv">Detalhes que fazem o cliente agir e o seu balcão parecer mais profissional.</p>
+  <div class="cols">
+    <div class="st rv"><h3>Pensada para converter</h3><p>Chamada clara e leitura imediata. O cliente entende em um segundo o que fazer.</p></div>
+    <div class="st rv"><h3>Presença premium</h3><p>Formato 10 × 10 cm com acabamento que valoriza o ambiente em vez de poluí-lo.</p></div>
+    <div class="st rv"><h3>Seu link, sua marca</h3><p>O toque e o QR code levam para o seu perfil, a sua página e o seu pagamento. Nada genérico.</p></div>
+  </div>
+</div></section>
+
+<section class="sec" id="faq"><div class="w" style="max-width:860px">
+  <h2 class="rv">Perguntas frequentes</h2><p class="sub rv">O que você precisa saber antes de escolher.</p>
+  <details class="rv"><summary>O cliente precisa instalar algum aplicativo?</summary><p>Não. O toque NFC e a leitura do QR code usam a câmera e os recursos que o celular já tem.</p></details>
+  <details class="rv"><summary>Funciona em iPhone e Android?</summary><p>Sim. A maioria dos celulares atuais lê NFC, e o QR code garante o acesso em qualquer aparelho com câmera.</p></details>
+  <details class="rv"><summary>Posso usar com o meu link e a minha marca?</summary><p>Sim. Cada plaquinha leva para o link do seu negócio, como a sua página de avaliação, o seu Instagram ou a sua chave PIX.</p></details>
+  <details class="rv"><summary>Como faço para pedir?</summary><p>Fale com a gente pelo WhatsApp, escolha o modelo e combinamos os detalhes do seu pedido.</p></details>
+</div></section>
+
+<div class="w"><div class="final rv">
+  <h2>Faça cada cliente trabalhar a favor da sua marca.</h2>
+  <p>Escolha o modelo ideal e receba atendimento direto para montar o seu pedido.</p>
+  <button class="btn primary" data-wa="">Falar com especialista</button>
+</div></div>
+<footer class="ft"><div class="w"><span><b style="color:var(--blue)">Vyntra</b> · Plaquinhas NFC</span><span>Toque, abra, cresça.</span></div></footer>
+
+<div id="modal" role="dialog" aria-modal="true" aria-label="Detalhes do produto"><div class="panel">
+  <div id="gallery"><div id="stage"></div><div id="thumbs"></div><p id="hint"></p></div>
+  <div id="side"></div>
+</div></div>
 <input type="file" id="file" accept="image/*" multiple hidden>
 <div id="toast" role="status"></div>
 
 <script>
-const $=s=>document.querySelector(s);
-let P=[],cur=null,sel=0,dragI=null,dragC=null,q='';
-try{P=JSON.parse(localStorage.getItem('vyntra')||'[]')}catch(e){P=[]}
-const ph='<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg>';
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const SEED={
+gp:{title:'Plaquinha NFC Avaliação Google – Preta',cat:'Reputação',tag:'Transforme atendimento em 5 estrelas.',story:'Seu cliente saiu satisfeito. E agora? A maioria vai embora sem deixar uma palavra, porque avaliar dá trabalho. Com a Vyntra, o caminho some: ele aproxima o celular e a página de avaliação do seu negócio já está aberta. Em segundos, a sua melhor experiência vira prova social para o próximo cliente que pesquisar por você no Google.',perks:['Abre direto na sua página de avaliação do Google','Funciona por toque (NFC) ou QR code, sem aplicativo','Visual preto sofisticado, ideal para ambientes premium','Mais avaliações aumentam a confiança de quem ainda não te conhece'],specs:[['Tamanho','10 × 10 cm'],['Tecnologia','NFC + QR code'],['Compatibilidade','iPhone e Android'],['Ideal para','Balcão, caixa e recepção']]},
+ig:{title:'Plaquinha NFC Siga no Instagram',cat:'Redes sociais',tag:'Cada cliente na loja é um seguidor em potencial.',story:'Pedir o @ no balcão quebra o ritmo do atendimento, e quase ninguém lembra depois. Com a plaquinha, o convite acontece sozinho: um toque e o seu perfil abre no celular. Sem digitar, sem procurar, sem esquecer. Sua vitrine digital cresce enquanto você continua atendendo.',perks:['Abre direto no seu perfil do Instagram','Convite silencioso, sem interromper o atendimento','Design moderno com as cores da rede','Transforma fluxo de loja em audiência para a sua marca'],specs:[['Tamanho','10 × 10 cm'],['Tecnologia','NFC + QR code'],['Compatibilidade','iPhone e Android'],['Ideal para','Lojas, restaurantes, salões e eventos']]},
+az:{title:'Plaquinha NFC Avaliação Google – Azul',cat:'Reputação',tag:'Reputação que cresce sem precisar pedir duas vezes.',story:'Reputação é o ativo que mais valoriza quando o gesto é fácil. Esta versão azul entra no ambiente com energia: chama o olhar, convida ao toque e leva o cliente direto ao formulário de avaliação. Quanto mais simples o caminho, mais histórias positivas ficam registradas com o nome da sua marca.',perks:['Leva direto ao formulário de avaliação do Google','Visual vibrante que se destaca no balcão','Toque (NFC) ou QR code, sem aplicativo','Fortalece a presença do seu negócio nas buscas'],specs:[['Tamanho','10 × 10 cm'],['Tecnologia','NFC + QR code'],['Compatibilidade','iPhone e Android'],['Ideal para','Balcão, caixa e recepção']]},
+pix:{title:'Plaquinha NFC Pague com PIX',cat:'Pagamentos',tag:'Menos fila, mais vendas fechadas.',story:'Cada segundo no caixa é um segundo de espera. A plaquinha Pague com PIX encurta o caminho entre a decisão de compra e o pagamento: o cliente aproxima o celular ou lê o QR code e segue com a segurança que já conhece. Atendimento mais ágil, menos fricção e uma experiência que transmite profissionalismo.',perks:['Acesso rápido ao pagamento via PIX','Dispensa digitar a chave','Visual limpo e de fácil leitura','Atendimento mais ágil no caixa'],specs:[['Tamanho','10 × 10 cm'],['Tecnologia','NFC + QR code'],['Compatibilidade','iPhone e Android'],['Ideal para','Balcão e caixa']]}};
+const find=t=>[['pix',/pix/i],['ig',/instagram/i],['az',/azul/i],['gp',/google/i]].find(([k,r])=>r.test(t))?.[0];
+let P=[],cur=null,sel=0,dragI=null,dragC=null,edit=false,cat='Todos',WA='';
+try{P=JSON.parse(localStorage.getItem('vyntra')||'[]');WA=localStorage.getItem('vyntra-wa')||''}catch(e){}
+P=P.map(p=>{const s=SEED[find(p.title||'')];return s&&!p.story?{id:p.id,imgs:p.imgs||[],...s,title:p.title||s.title}:p});
+if(!P.length)P=Object.values(SEED).map((s,i)=>({id:Date.now()+i,imgs:[],...s}));
+const ph='<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg>';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),3400)}
 function save(){try{localStorage.setItem('vyntra',JSON.stringify(P));return true}catch(e){toast('Espaço do navegador cheio. Remova algumas imagens.');return false}}
+function wa(t){
+  if(!WA){toast('Ative Gerenciar e informe seu WhatsApp para receber os contatos.');return}
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(t?'Olá! Tenho interesse na '+t+'.':'Olá! Quero conhecer as plaquinhas NFC da Vyntra.'),'_blank','noopener');
+}
+const io='IntersectionObserver'in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1}):null;
+const rv=()=>$$('.rv:not(.in)').forEach(n=>io?io.observe(n):n.classList.add('in'));
 
+function hero(){
+  const im=P.map(p=>p.imgs[0]).filter(Boolean).slice(0,3);
+  $('#stack').innerHTML=im.length?im.map((u,i)=>`<img class="f f${i}" src="${u}" alt="">`).join(''):'<div class="f f0 emp">'+ph+'</div>';
+}
 function grid(){
-  const g=$('#grid'),list=P.filter(p=>(p.title+' '+p.desc).toLowerCase().includes(q));
-  $('#count').textContent=P.length?P.length+(P.length==1?' produto':' produtos')+' em exposição':'Organize seus produtos em exposições com várias imagens.';
-  if(!P.length){g.innerHTML='<div class="empty"><h2>Seu catálogo está vazio</h2><p>Adicione o primeiro produto com imagens, título e descrição.</p><button class="btn primary" id="new2">Novo produto</button></div>';return}
-  if(!list.length){g.innerHTML='<div class="empty"><p style="margin:0">Nenhum produto encontrado.</p></div>';return}
-  g.innerHTML=list.map(p=>`<button class="card" draggable="true" data-id="${p.id}"><div class="img">${p.imgs[0]?`<img src="${p.imgs[0]}" alt="${esc(p.title)}">`:ph}</div><h3>${esc(p.title||'Sem título')}</h3><p>${esc(p.desc||'Sem descrição')}</p><span class="meta">${p.imgs.length} ${p.imgs.length==1?'imagem':'imagens'}</span></button>`).join('');
+  const cats=['Todos',...new Set(P.map(p=>p.cat).filter(Boolean))];
+  if(!cats.includes(cat))cat='Todos';
+  $('#chips').innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-c="${esc(c)}">${esc(c)}</button>`).join('');
+  $('#grid').innerHTML=P.filter(p=>cat=='Todos'||p.cat==cat).map(p=>`<article class="card rv" tabindex="0" role="button" data-id="${p.id}" ${edit?'draggable="true"':''}><div class="img">${p.imgs[0]?`<img src="${p.imgs[0]}" alt="${esc(p.title)}">`:ph}</div><div class="cb"><span class="cat">${esc(p.cat)}</span><h3>${esc(p.title||'Sem título')}</h3><p>${esc(p.tag)}</p><span class="more">${edit?'Editar produto':'Ver detalhes'}</span></div></article>`).join('');
+  rv();hero();
 }
-
 function gal(){
-  const s=$('#stage');
   if(sel>=cur.imgs.length)sel=Math.max(0,cur.imgs.length-1);
-  s.innerHTML=cur.imgs.length?`<img src="${cur.imgs[sel]}" alt="">`:'<div class="dz"><b>Arraste imagens aqui</b><span>ou clique para escolher</span></div>';
+  const s=$('#stage');
+  s.innerHTML=cur.imgs.length?`<img src="${cur.imgs[sel]}" alt="${esc(cur.title)}">`:`<div class="dz"><b>${edit?'Arraste imagens aqui':'Imagens em breve'}</b>${edit?'<span>ou clique para escolher</span>':''}</div>`;
   s.classList.toggle('empty',!cur.imgs.length);
-  $('#thumbs').innerHTML=cur.imgs.map((u,i)=>`<div class="th ${i==sel?'sel':''}" draggable="true" data-i="${i}" tabindex="0"><img src="${u}" alt="Imagem ${i+1}"><button class="x" data-x="${i}" aria-label="Remover imagem">×</button></div>`).join('')+(cur.imgs.length?'<button class="th add" id="add" aria-label="Adicionar imagens">+</button>':'');
-  $('#hint').textContent=cur.imgs.length>1?'Arraste as miniaturas para reordenar. A primeira é a capa.':'';
+  $('#thumbs').innerHTML=cur.imgs.length>1||edit?cur.imgs.map((u,i)=>`<div class="th ${i==sel?'sel':''}" ${edit?'draggable="true"':''} data-i="${i}" tabindex="0"><img src="${u}" alt="Imagem ${i+1}"><button class="x" data-x="${i}" aria-label="Remover imagem">×</button></div>`).join('')+(edit&&cur.imgs.length?'<button class="th add" id="add" aria-label="Adicionar imagens">+</button>':''):'';
+  $('#hint').textContent=edit&&cur.imgs.length>1?'Arraste as miniaturas para reordenar. A primeira é a capa.':'';
 }
-function edit(p){
-  cur=p;sel=0;$('#t').value=p.title;$('#d').value=p.desc;
-  const b=$('#del');b.textContent='Excluir';b.classList.remove('ask');
-  $('#modal').classList.add('on');gal();
+function side(){
+  const p=cur,S=$('#side');
+  if(!edit){
+    S.innerHTML=`<span class="cat">${esc(p.cat)}</span><h2>${esc(p.title)}</h2><p class="tag">${esc(p.tag)}</p><p class="story">${esc(p.story)}</p><ul class="perks">${(p.perks||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><dl class="specs">${(p.specs||[]).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl><div class="mact"><button class="btn primary" data-wa="${esc(p.title)}">Quero este modelo</button><button class="btn" id="cl">Fechar</button></div>`;
+    return;
+  }
+  S.innerHTML='<label>Título<input class="field" id="ft" maxlength="90"></label><label>Chamada curta<input class="field" id="fg" maxlength="120"></label><label>Categoria<input class="field" id="fc" maxlength="30"></label><label>História do produto<textarea class="field" id="fs" rows="5"></textarea></label><label>Benefícios (um por linha)<textarea class="field" id="fp" rows="4"></textarea></label><label>Especificações (Nome: valor, uma por linha)<textarea class="field" id="fk" rows="4"></textarea></label><div class="mact"><button class="btn" id="dl">Excluir</button><button class="btn primary" id="cl">Salvar</button></div>';
+  $('#ft').value=p.title;$('#fg').value=p.tag||'';$('#fc').value=p.cat||'';$('#fs').value=p.story||'';
+  $('#fp').value=(p.perks||[]).join('\n');$('#fk').value=(p.specs||[]).map(r=>r.join(': ')).join('\n');
+  $('#ft').oninput=e=>p.title=e.target.value;$('#fg').oninput=e=>p.tag=e.target.value;
+  $('#fc').oninput=e=>p.cat=e.target.value.trim();$('#fs').oninput=e=>p.story=e.target.value;
+  $('#fp').oninput=e=>p.perks=e.target.value.split('\n').map(x=>x.trim()).filter(Boolean);
+  $('#fk').oninput=e=>p.specs=e.target.value.split('\n').map(x=>x.split(':')).filter(a=>a[0].trim()).map(a=>[a[0].trim(),a.slice(1).join(':').trim()]);
 }
+function open(p){cur=p;sel=0;gal();side();$('#modal').classList.add('on');document.body.style.overflow='hidden'}
 function close(){
   if(!cur)return;
-  if(!cur.title.trim()&&!cur.imgs.length&&!cur.desc.trim())P=P.filter(p=>p!==cur);
-  save();cur=null;$('#modal').classList.remove('on');grid();
+  if(edit&&!cur.title.trim()&&!cur.imgs.length&&!cur.story)P=P.filter(p=>p!==cur);
+  if(edit)save();
+  cur=null;$('#modal').classList.remove('on');document.body.style.overflow='';grid();
 }
-function shrink(f){
-  return new Promise(res=>{
-    const r=new FileReader();
-    r.onload=()=>{const im=new Image();im.onload=()=>{
-      const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');
-      c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
-      const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
-      res(c.toDataURL('image/jpeg',.82))};im.onerror=()=>res(null);im.src=r.result};
-    r.onerror=()=>res(null);r.readAsDataURL(f);
-  });
-}
+function shrink(f){return new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.84))};im.onerror=()=>res(null);im.src=r.result};r.onerror=()=>res(null);r.readAsDataURL(f)})}
 async function addFiles(files){
-  const list=[...files].filter(f=>f.type.startsWith('image/'));
-  if(!list.length){toast('Escolha arquivos de imagem.');return}
-  for(const f of list){const u=await shrink(f);if(u)cur.imgs.push(u)}
+  const l=[...files].filter(f=>f.type.startsWith('image/'));
+  if(!l.length){toast('Escolha arquivos de imagem.');return}
+  for(const f of l){const u=await shrink(f);if(u)cur.imgs.push(u)}
   gal();save();
 }
 
-$('#new').onclick=()=>{const p={id:Date.now(),title:'',desc:'',imgs:[]};P.unshift(p);edit(p)};
-$('#grid').addEventListener('click',e=>{
-  if(e.target.closest('#new2')){$('#new').click();return}
-  const c=e.target.closest('.card');if(c)edit(P.find(p=>p.id==c.dataset.id));
+$('#mg').onclick=()=>{edit=!edit;document.body.classList.toggle('edit',edit);$('#mg').textContent=edit?'Concluir edição':'Gerenciar';grid()};
+$('#new').onclick=()=>{const p={id:Date.now(),title:'',tag:'',cat:'',story:'',perks:[],specs:[],imgs:[]};P.unshift(p);open(p)};
+$('#wa').value=WA;
+$('#wa').oninput=e=>{WA=e.target.value.replace(/\D/g,'');try{localStorage.setItem('vyntra-wa',WA)}catch(x){}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-wa]');if(b)wa(b.dataset.wa)});
+$('#chips').onclick=e=>{const c=e.target.closest('.chip');if(c){cat=c.dataset.c;grid()}};
+const act=c=>{if(c)open(P.find(p=>p.id==c.dataset.id))};
+$('#grid').addEventListener('click',e=>act(e.target.closest('.card')));
+$('#grid').addEventListener('keydown',e=>{if(e.key=='Enter')act(e.target.closest('.card'))});
+$('#grid').addEventListener('mousemove',e=>{
+  if(edit)return;const i=e.target.closest('.img');if(!i)return;
+  const r=i.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  i.style.transform=`perspective(900px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateY(-4px)`;
 });
-$('#q').oninput=e=>{q=e.target.value.toLowerCase().trim();grid()};
-
-/* reordenar produtos */
-$('#grid').addEventListener('dragstart',e=>{const c=e.target.closest('.card');if(!c)return;dragC=c.dataset.id;c.classList.add('drag');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',dragC)});
-$('#grid').addEventListener('dragover',e=>{if(!dragC)return;e.preventDefault();document.querySelectorAll('.card.over').forEach(x=>x.classList.remove('over'));const c=e.target.closest('.card');if(c&&c.dataset.id!=dragC)c.classList.add('over')});
+$('#grid').addEventListener('mouseout',e=>{const i=e.target.closest('.img');if(i)i.style.transform=''});
+$('#grid').addEventListener('dragstart',e=>{const c=e.target.closest('.card');if(!c)return;dragC=c.dataset.id;c.classList.add('drag');e.dataTransfer.setData('text/plain',dragC)});
+$('#grid').addEventListener('dragover',e=>{if(!dragC)return;e.preventDefault();$$('.card.over').forEach(x=>x.classList.remove('over'));const c=e.target.closest('.card');if(c&&c.dataset.id!=dragC)c.classList.add('over')});
 $('#grid').addEventListener('drop',e=>{
   if(!dragC)return;e.preventDefault();const c=e.target.closest('.card');
   if(c&&c.dataset.id!=dragC){const a=P.findIndex(p=>p.id==dragC),b=P.findIndex(p=>p.id==c.dataset.id),[m]=P.splice(a,1);P.splice(b,0,m);save()}
@@ -183,24 +273,22 @@ $('#grid').addEventListener('drop',e=>{
 });
 $('#grid').addEventListener('dragend',()=>{dragC=null;grid()});
 
-/* galeria */
 const G=$('#gallery');
 G.addEventListener('click',e=>{
   const x=e.target.closest('.x');
-  if(x){cur.imgs.splice(+x.dataset.x,1);gal();save();return}
-  if(e.target.closest('#add')||(e.target.closest('#stage')&&!cur.imgs.length)){$('#file').click();return}
+  if(x&&edit){cur.imgs.splice(+x.dataset.x,1);gal();save();return}
+  if(edit&&(e.target.closest('#add')||(e.target.closest('#stage')&&!cur.imgs.length))){$('#file').click();return}
   const t=e.target.closest('.th');if(t&&t.dataset.i!=null){sel=+t.dataset.i;gal()}
 });
-G.addEventListener('keydown',e=>{if((e.key=='Enter'||e.key==' ')&&e.target.classList.contains('th')&&e.target.dataset.i!=null){e.preventDefault();sel=+e.target.dataset.i;gal()}});
-G.addEventListener('dragstart',e=>{const t=e.target.closest('.th');if(!t||t.dataset.i==null)return;dragI=+t.dataset.i;t.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain','i')});
+G.addEventListener('dragstart',e=>{const t=e.target.closest('.th');if(!edit||!t||t.dataset.i==null)return;dragI=+t.dataset.i;t.classList.add('dragging');e.dataTransfer.setData('text/plain','i')});
 G.addEventListener('dragover',e=>{
-  e.preventDefault();
+  if(!edit)return;e.preventDefault();
   if(dragI==null)G.classList.add('drop');
-  else{document.querySelectorAll('.th.target').forEach(x=>x.classList.remove('target'));const t=e.target.closest('.th');if(t&&t.dataset.i!=null)t.classList.add('target')}
+  else{$$('.th.target').forEach(x=>x.classList.remove('target'));const t=e.target.closest('.th');if(t&&t.dataset.i!=null)t.classList.add('target')}
 });
 G.addEventListener('dragleave',e=>{if(!G.contains(e.relatedTarget))G.classList.remove('drop')});
 G.addEventListener('drop',e=>{
-  e.preventDefault();G.classList.remove('drop');
+  if(!edit)return;e.preventDefault();G.classList.remove('drop');
   if(dragI!=null){
     const t=e.target.closest('.th');
     if(t&&t.dataset.i!=null&&+t.dataset.i!=dragI){const to=+t.dataset.i,[m]=cur.imgs.splice(dragI,1);cur.imgs.splice(to,0,m);sel=to;save()}
@@ -209,21 +297,16 @@ G.addEventListener('drop',e=>{
 });
 G.addEventListener('dragend',()=>{dragI=null;gal()});
 $('#file').onchange=e=>{if(cur&&e.target.files.length)addFiles(e.target.files);e.target.value=''};
-
-/* formulário */
-$('#t').oninput=e=>{cur.title=e.target.value};
-$('#d').oninput=e=>{cur.desc=e.target.value};
-$('#done').onclick=close;
-$('#del').onclick=e=>{
-  const b=e.currentTarget;
-  if(!b.classList.contains('ask')){b.classList.add('ask');b.textContent='Confirmar exclusão';setTimeout(()=>{b.classList.remove('ask');b.textContent='Excluir'},3500);return}
-  P=P.filter(p=>p!==cur);cur=null;save();$('#modal').classList.remove('on');grid();toast('Produto excluído.');
-};
-$('#modal').addEventListener('mousedown',e=>{if(e.target.id=='modal')close()});
+$('#modal').addEventListener('click',e=>{
+  if(e.target.id=='modal'||e.target.closest('#cl'))return close();
+  const d=e.target.closest('#dl');if(!d)return;
+  if(!d.classList.contains('ask')){d.classList.add('ask');d.textContent='Confirmar exclusão';setTimeout(()=>{d.classList.remove('ask');d.textContent='Excluir'},3500);return}
+  P=P.filter(p=>p!==cur);cur=null;save();$('#modal').classList.remove('on');document.body.style.overflow='';grid();toast('Produto excluído.');
+});
 document.addEventListener('keydown',e=>{if(e.key=='Escape'&&cur)close()});
 window.addEventListener('dragover',e=>e.preventDefault());
 window.addEventListener('drop',e=>e.preventDefault());
-grid();
+save();grid();rv();
 </script>
 </body>
 </html>
